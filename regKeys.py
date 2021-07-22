@@ -40,6 +40,19 @@ class RegistryKey:
         self.__value = value
 
     def create_key(self):
-        with winreg.ConnectRegistry(None, type) as hkey:
-            with winreg.CreateKey(hkey, self.__path) as sub_key:
-                winreg.SetValueEx(sub_key, self.__name, 0, self.__access, self.__value)
+        try:
+            with winreg.ConnectRegistry(None, type) as hkey:
+                with winreg.CreateKey(hkey, self.__path) as sub_key:
+                    winreg.SetValueEx(sub_key, self.__name, 0, self.__type, self.__value)
+                    return True
+        except Exception as e:
+            print("Exception occured: {}".format(e))
+
+    def read_key(self):
+        try:
+            with winreg.ConnectRegistry(None, self.__KeyLocation) as hkey:
+                with winreg.OpenKey(hkey, self.__path, 0, self.__access) as key:
+                    return winreg.QueryValueEx(key, self.__name)[0];
+
+        except Exception as e:
+            print("Exception occured: {}".format(e))
