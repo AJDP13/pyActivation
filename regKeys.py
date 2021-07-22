@@ -38,3 +38,8 @@ class RegistryKey:
         self.__path = path
         self.__type = type
         self.__value = value
+
+    def create_key(self):
+        with winreg.ConnectRegistry(None, type) as hkey:
+            with winreg.CreateKey(hkey, self.__path) as sub_key:
+                winreg.SetValueEx(sub_key, self.__name, 0, self.__access, self.__value)
