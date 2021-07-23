@@ -5,7 +5,7 @@ except ImportError:
 
 class ActivationWindow:
 
-    def __init__(self, title="Activation", sizeX = 300, sizeY=300, dispX=0, dispY=0, resizeX = True, resizeY = True, fullscreen = False, topmost = False, alpha=1):
+    def __init__(self, title="Activation", sizeX = 300, sizeY=300, dispX=0, dispY=0, resizeX = True, resizeY = True, fullscreen = False, topmost = False, alpha=1, iconpath = ""):
         self.__title = title
         self.__sizeX = sizeX
         self.__sizeY = sizeY
@@ -18,6 +18,7 @@ class ActivationWindow:
         self.__showing = False
         self.__alpha = alpha
         self.__destroyed = False
+        self.__iconpath = iconpath
         self.show()
 
     def show(self): #Function to create window and show it
@@ -29,7 +30,9 @@ class ActivationWindow:
             self.__root.attributes("-fullscreen", self.__fullscreen)
             self.__root.attributes("-topmost", self.__topmost)
             self.__root.attributes("-alpha", self.__alpha)
+            self.__root.iconbitmap(self.__iconpath)
             self.__showing = True
+            self.__destroyed = False
             #return self.__root
         else:
             print("ActivationWindow: Window is already showing")
