@@ -29,7 +29,7 @@ KEY_READ = winreg.KEY_READ
 KEY_WRITE = winreg.KEY_WRITE
 
 
-class RegistryKey:
+class RegistryValue:
 
     def __init__(self, name="RegKey", access = KEY_READ, KeyLocation = HKEY_CURRENT_USER, path = "Software/RegistryKeys", type = REG_DWORD, value = ""):
         self.__name = name
@@ -38,8 +38,10 @@ class RegistryKey:
         self.__path = path
         self.__type = type
         self.__value = value
+        self.__full_path = self.__KeyLocation + "/" + self.__path
+        self.__deleted = False
 
-    def create_key(self):
+    def create_value(self):
         try:
             with winreg.ConnectRegistry(None, type) as hkey:
                 with winreg.CreateKey(hkey, self.__path) as sub_key:
@@ -48,7 +50,7 @@ class RegistryKey:
         except Exception as e:
             print("Exception occured: {}".format(e))
 
-    def read_key(self):
+    def read_value(self):
         try:
             with winreg.ConnectRegistry(None, self.__KeyLocation) as hkey:
                 with winreg.OpenKey(hkey, self.__path, 0, self.__access) as key:
@@ -56,3 +58,13 @@ class RegistryKey:
 
         except Exception as e:
             print("Exception occured: {}".format(e))
+            return False
+
+    def delete_value(self):
+        try:
+            winreg.DeleteValue(self.__full_path, self.__name)
+            return True
+        
+        except Exception as e:
+            print("Exception occured: {}".format(e))
+            return False
