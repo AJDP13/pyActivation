@@ -9,3 +9,9 @@ class Activation:
         self.__title = title
         self.__sizeX = sizeX
         self.__sizeY = sizeY
+        self.__dispX = dispX
+        self.__dispY = dispY
+        self.__resizeX = resizeX
+        self.__resizeY = resizeY
+        self.__fullscreen = fullscreen
+        self.__topmost = topmost
