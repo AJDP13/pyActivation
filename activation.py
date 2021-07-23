@@ -3,7 +3,7 @@ try:
 except ImportError:
     print("Error importing reuired library tkinter")
 
-class Activation:
+class ActivationWindow:
 
     def __init__(self, title="Activation", sizeX = 300, sizeY=300, dispX=0, dispY=0, resizeX = True, resizeY = True, fullscreen = False, topmost = False, alpha=1):
         self.__title = title
