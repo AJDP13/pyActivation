@@ -39,16 +39,20 @@ class RegistryValue:
         self.__type = type
         self.__value = value
         self.__full_path = self.__KeyLocation + "/" + self.__path
-        self.__deleted = False
+        self.__deleted = True
 
     def create_value(self):
-        try:
-            with winreg.ConnectRegistry(None, type) as hkey:
-                with winreg.CreateKey(hkey, self.__path) as sub_key:
-                    winreg.SetValueEx(sub_key, self.__name, 0, self.__type, self.__value)
-                    return True
-        except Exception as e:
-            print("Exception occured: {}".format(e))
+        if self.__deleted:
+            try:
+                with winreg.ConnectRegistry(None, type) as hkey:
+                    with winreg.CreateKey(hkey, self.__path) as sub_key:
+                        winreg.SetValueEx(sub_key, self.__name, 0, self.__type, self.__value)
+                        return True
+            except Exception as e:
+                print("Exception occured: {}".format(e))
+                return False
+        else:
+            return False
 
     def read_value(self):
         try:
@@ -63,6 +67,7 @@ class RegistryValue:
     def delete_value(self):
         try:
             winreg.DeleteValue(self.__full_path, self.__name)
+            self.__deleted = True
             return True
         
         except Exception as e:
